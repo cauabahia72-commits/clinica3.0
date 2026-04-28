@@ -1,35 +1,39 @@
-import { createClient } from '@supabase/supabase-js';
+
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
 const supabaseUrl = "https://qjgixnsrqmlndqjhpsxd.supabase.co";
 const supabaseKey = "sb_publishable_JqFXfC_RyNbCCXxbzep_5A_dXIMYSfw";
 
+export const banco = createClient(supabaseUrl, supabaseKey);
 
-const banco = supabase.createClient(supabaseUrl, supabaseKey);
+const botao = document.getElementById("btnEnviar");
 
-const form = document.getElementById("form");
+if(botao){
+    botao.addEventListener("click", async (e) =>{
+        e.preventDefault();
 
-form.addEventListener("submit", async function(event) {
-  event.preventDefault();
+        const nome = document.getElementById("nome").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const numero = document.getElementById("numero").value.trim();
 
-  const nome = document.getElementById("nome").value;
-  const celular = document.getElementById("celular").value;
-  const email = document.getElementById("email").value;
+        if (!nome || !numero || !email){
+            alert("prencha todos os campos");
+            return;
+        }
 
-  const { error } = await banco
-    .from("pacientes")
-    .insert([
-      {
-        nome: nome,
-        celular: celular,
-        email: email
-      }
-    ]);
+        await inserir(numero, nome, email);
+    });
+}
 
-  if (error) {
-    alert("Erro ao cadastrar paciente.");
-    console.log(error);
-  } else {
-    alert("Paciente cadastrado com sucesso!");
-    form.reset();
-  }
-});
+async function inserir(numero, nome, email) {
+    const{error} = await banco.from("pacientes") .insert([{numero, nome, email}]);
+
+    if(error){
+        console.log("erro");
+        alert("Erro ao inserir");
+        return;
+    }
+    
+    alert("usuario cadastrado");
+
+}
