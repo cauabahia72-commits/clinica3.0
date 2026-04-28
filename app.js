@@ -36,8 +36,8 @@ async function inserir(numero, nome, email) {
     
     alert("usuario cadastrado");
 
-    document.getElementById("nome").value("");
-    document.getElementById("email").value("");
-    document.getElementById("numero").value("");
+    document.getElementById("nome").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("numero").value = "";
 
 }
